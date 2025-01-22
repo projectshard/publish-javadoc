@@ -1,0 +1,19 @@
+name: "Lint ansible playbook"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⚙ Checkout project
+        uses: actions/checkout@v4
+
+      - name: Run ansible lint
+        uses: ansible/ansible-lint@main
+        with:
+          working_directory: ${{ github.workspace }}/ansible/
