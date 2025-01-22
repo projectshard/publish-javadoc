@@ -1,9 +1,10 @@
 ---
 - name: Deploy java docs
-  hosts: localhost
+  hosts: beetroot
+  remote_user: ansible
 
   vars:
-    java_doc_base_dir: "/data/javadoc"
+    java_doc_base_dir: "/data/javadocs"
     gradle_project_name: "{{ gradle_project_name }}"
     gradle_project_version: "{{ gradle_project_version }}"
     java_doc_temp_dir: "{{ java_doc_temp_dir }}"
