@@ -25,8 +25,6 @@
         dest: "{{ java_doc_base_dir }}/{{ gradle_project_name }}/{{ gradle_project_version }}"
         mode: "0644"
         directory_mode: "0755"
-      with_fileglob:
-        - "build/docs/javadoc/*"
     - name: Unlink old latest link
       ansible.builtin.command:
         cmd: "cd {{ java_doc_base_dir }}/{{ gradle_project_name }} && unlink latest"
