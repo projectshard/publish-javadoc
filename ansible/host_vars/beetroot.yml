@@ -1,0 +1,3 @@
+---
+ansible_host: cube-nation.de
+ansible_port: 478
