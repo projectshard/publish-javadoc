@@ -21,9 +21,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: ⚙ Checkout project
-      uses: actions/checkout@v4
-
     - name: 🔑 Save SSH key to file
       run: |
         mkdir -m 700 ~/.ssh
@@ -33,16 +30,15 @@ runs:
 
     - name: Copy files to target location
       run: |
-        cd $GITHUB_WORKSPACE/ansible
-        ansible-playbook -i ./inventories/remote ./publish-javadoc.yml --extra-vars "gradle_project_name=${{ inputs.PROJECT_NAME }} gradle_project_version=${{ inputs.PROJECT_VERSION }} java_doc_temp_dir=${{ inputs.JAVA_DOC_TEMP_DIR }}"
-      shell: bash
-
-    - name: Get URL
-      id: get-url
-      run: echo "url=https://example.com/${{ inputs.PROJECT_NAME }}/latest" >> $GITHUB_OUTPUT
+        ansible-playbook -i ./ansible/inventories/remote ./ansible/publish-javadoc.yml --extra-vars "gradle_project_name=${{ inputs.PROJECT_NAME }} gradle_project_version=${{ inputs.PROJECT_VERSION }} java_doc_temp_dir=${{ inputs.JAVA_DOC_TEMP_DIR }}"
       shell: bash
 
     - name: 🔑 Remove SSH key (cleanup)
       if: always()
       run: rm -r ~/.ssh
+      shell: bash
+
+    - name: Get URL
+      id: get-url
+      run: echo "url=https://jd.projectshard.dev/${{ inputs.PROJECT_NAME }}/latest" >> $GITHUB_OUTPUT
       shell: bash
