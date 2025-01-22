@@ -9,10 +9,10 @@
     java_doc_temp_dir: "{{ java_doc_temp_dir }}"
 
   tasks:
-    - name: Remove directory if exists
-      ansible.builtin.file:
-        path: "{{ java_doc_base_dir }}/{{ gradle_project_name }}/{{ gradle_project_version }}"
-        state: absent
+#    - name: Remove directory if exists
+#      ansible.builtin.file:
+#        path: "{{ java_doc_base_dir }}/{{ gradle_project_name }}/{{ gradle_project_version }}"
+#        state: absent
     - name: Create directory for JavaDoc
       ansible.builtin.file:
         path: "{{ java_doc_base_dir }}/{{ gradle_project_name }}/{{ gradle_project_version }}"
