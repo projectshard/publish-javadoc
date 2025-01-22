@@ -1,0 +1,30 @@
+---
+- name: Deploy java docs
+  hosts: localhost
+
+  vars:
+    JAVA_DOC_BASE_DIR: "/data/javadoc"
+    GRADLE_PROJECT_NAME: "{{ gradle_project_name }}"
+    GRADLE_PROJECT_VERSION: "{{ gradle_project_version }}"
+
+  tasks:
+    - name: Remove directory if exists
+      ansible.builtin.file:
+        path: "{{ JAVA_DOC_BASE_DIR }}/{{ GRADLE_PROJECT_NAME }}/{{ GRADLE_PROJECT_VERSION }}"
+        state: absent
+    - name: Create directory for JavaDoc
+      ansible.builtin.file:
+        path: "{{ JAVA_DOC_BASE_DIR }}/{{ GRADLE_PROJECT_NAME }}/{{ GRADLE_PROJECT_VERSION }}"
+        state: directory
+    - name: Copy JavaDoc files to new directory
+      ansible.builtin.copy:
+        src: "/tmp/"
+        dest: "{{ JAVA_DOC_BASE_DIR }}/{{ GRADLE_PROJECT_NAME }}/{{ GRADLE_PROJECT_VERSION }}"
+      with_fileglob:
+        - "build/docs/javadoc/*"
+    - name: Unlink old latest link
+      ansible.builtin.command:
+        cmd: "cd {{ JAVA_DOC_BASE_DIR }}/{{ GRADLE_PROJECT_NAME }} && unlink latest"
+    - name: Link new latest
+      ansible.builtin.command:
+        cmd: "cd {{ JAVA_DOC_BASE_DIR }}/{{ GRADLE_PROJECT_NAME }} && ln -s {{ GRADLE_PROJECT_VERSION }} latest"

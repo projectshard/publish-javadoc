@@ -1,0 +1,45 @@
+name: Publish JavaDocs
+description: Publishes JavaDocs on the project shard jd page
+inputs:
+  PROJECT_NAME:
+    description: 'Name of the project'
+    required: true
+  PROJECT_VERSION:
+    description: 'Version of the project'
+    required: true
+  SSH_KEY:
+    description: 'SSH key to access the server'
+    required: true
+outputs:
+  url:
+    description: "URL of the published JavaDocs"
+    value: ${{ steps.get-url.outputs.url }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: ⚙ Checkout project
+      uses: actions/checkout@v4
+
+    - name: 🔑 Save SSH key to file
+      run: |
+        mkdir -m 700 ~/.ssh
+        echo "${{ inputs.SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+      shell: bash
+
+    - name: Copy files to target location
+      run: |
+        cd $GITHUB_WORKSPACE/ansible
+        ansible-playbook -i ./inventories/remote ./publish-javadoc.yml --extra-vars "gradle_project_name=${{ inputs.PROJECT_NAME }} gradle_project_version=${{ inputs.PROJECT_VERSION }}"
+      shell: bash
+
+    - name: Get URL
+      id: get-url
+      run: echo "url=https://example.com/${{ inputs.PROJECT_NAME }}/latest" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: 🔑 Remove SSH key (cleanup)
+      if: always()
+      run: rm -r ~/.ssh
+      shell: bash
