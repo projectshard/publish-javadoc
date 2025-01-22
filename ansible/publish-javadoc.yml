@@ -16,13 +16,13 @@
       ansible.builtin.file:
         path: "{{ java_doc_base_dir }}/{{ gradle_project_name }}/{{ gradle_project_version }}"
         state: directory
-        mode: 0755
+        mode: "0755"
     - name: Copy JavaDoc files to new directory
       ansible.builtin.copy:
         src: "/tmp/"
         dest: "{{ java_doc_base_dir }}/{{ gradle_project_name }}/{{ gradle_project_version }}"
-        mode: 0644
-        directory_mode: 0755
+        mode: "0644"
+        directory_mode: "0755"
       with_fileglob:
         - "build/docs/javadoc/*"
     - name: Unlink old latest link
