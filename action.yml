@@ -30,7 +30,7 @@ runs:
 
     - name: Copy files to target location
       run: |
-        ansible-playbook -i ./ansible/inventories/remote ./ansible/publish-javadoc.yml --extra-vars "gradle_project_name=${{ inputs.PROJECT_NAME }} gradle_project_version=${{ inputs.PROJECT_VERSION }} java_doc_temp_dir=${{ inputs.JAVA_DOC_TEMP_DIR }}"
+        ansible-playbook -i ${GITHUB_ACTION_PATH}/ansible/inventory/remote ${GITHUB_ACTION_PATH}/ansible/publish-javadoc.yml --extra-vars "gradle_project_name=${{ inputs.PROJECT_NAME }} gradle_project_version=${{ inputs.PROJECT_VERSION }} java_doc_temp_dir=${{ inputs.JAVA_DOC_TEMP_DIR }}"
       shell: bash
 
     - name: 🔑 Remove SSH key (cleanup)
