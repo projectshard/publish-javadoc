@@ -27,9 +27,11 @@
         directory_mode: "0755"
     - name: Unlink old latest link
       ansible.builtin.command:
-        cmd: "cd {{ java_doc_base_dir }}/{{ gradle_project_name }} && unlink latest"
+        chdir: "{{ java_doc_base_dir }}/{{ gradle_project_name }}"
+        cmd: "unlink latest"
       changed_when: false
     - name: Link new latest
       ansible.builtin.command:
-        cmd: "cd {{ java_doc_base_dir }}/{{ gradle_project_name }} && ln -s {{ gradle_project_version }} latest"
+        chdir: "{{ java_doc_base_dir }}/{{ gradle_project_name }}"
+        cmd: "ln -s {{ gradle_project_version }} latest"
       changed_when: false
