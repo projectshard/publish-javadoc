@@ -20,7 +20,7 @@
         mode: "0755"
     - name: Copy JavaDoc files to new directory
       ansible.builtin.copy:
-        src: "{{ java_doc_temp_dir}}"
+        src: "{{ java_doc_temp_dir }}"
         dest: "{{ java_doc_base_dir }}/{{ gradle_project_name }}/{{ gradle_project_version }}"
         mode: "0644"
         directory_mode: "0755"
